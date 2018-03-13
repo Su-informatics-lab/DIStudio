@@ -1,0 +1,6 @@
+.*.swp
+
+*.RData
+.Rhistory
+.Rproj.user
+.Rapp.history
