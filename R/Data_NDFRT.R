@@ -56,5 +56,14 @@ createNdfrtDataFromDatabase <- function(conn) {
       Rx_Norm.NDFRT
    )
 
-   save.image("NDFRT.Rdata")
+   save(
+      list=c(
+         "Def_Association", "Def_Concept", "DefiningConcepts", "DefiningRoles",
+         "Def_Kind", "Def_Namespace", "Def_Property", "Def_Qualifier",
+         "Def_QualifierValue", "Def_Role", "Def_RoleValue",
+         "ConceptAssociation", "ConceptProperty",
+         "RX_Norm", "Rx_Norm.NDFRT"
+      ),
+      file="NDFRT.Rdata"
+   )
 }
