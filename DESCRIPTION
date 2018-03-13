@@ -1,0 +1,12 @@
+Package: DIStudio
+Type: Package
+Title: Drug Informatics Studio
+Version: 0.1.0
+Author: #TODO#
+Maintainer: #TODO# <yourself@somewhere.net>
+Description: #TODO#
+License: #TODO#
+Encoding: UTF-8
+LazyData: true
+Suggests:
+   testthat
