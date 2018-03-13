@@ -1,24 +1,22 @@
 createNdfrtDataFromDatabase <- function(conn) {
-   Def_Association <- db.q("select * from ndfrt.ndfrt_associationdef;",nrows = NULL,verbose = FALSE)
-   Def_Concept <- db.q("select * from ndfrt.ndfrt_conceptdef;",nrows = NULL,verbose = FALSE)
-   DefiningConcepts <- db.q("select * from ndfrt.ndfrt_definingconcepts;",nrows = NULL,verbose = FALSE)
-   DefiningRoles <- db.q("select * from ndfrt.ndfrt_definingroles;",nrows = NULL,verbose = FALSE)
-   Def_Kind <- db.q("select * from ndfrt.ndfrt_kinddef;",nrows = NULL,verbose = FALSE)
-   Def_Namespace <- db.q("select * from ndfrt.ndfrt_namespacedef;",nrows = NULL,verbose = FALSE)
-   Def_Property <- db.q("select * from ndfrt.ndfrt_propertydef;",nrows = NULL,verbose = FALSE)
-   Def_Qualifier <- db.q("select * from ndfrt.ndfrt_qualifierdef;",nrows = NULL,verbose = FALSE)
-   Def_QualifierValue <- db.q("select * from ndfrt.ndfrt_qualifiervaluedef;",nrows = NULL,verbose = FALSE)
-   Def_Role <- db.q("select * from ndfrt.ndfrt_roledef;",nrows = NULL,verbose = FALSE)
-   Def_RoleValue <- db.q("select * from ndfrt.ndfrt_rolevaluedef;",nrows = NULL,verbose = FALSE)
+   Def_Association <- PivotalR::db.q("select * from ndfrt.ndfrt_associationdef;",nrows = NULL,verbose = FALSE)
+   Def_Concept <- PivotalR::db.q("select * from ndfrt.ndfrt_conceptdef;",nrows = NULL,verbose = FALSE)
+   DefiningConcepts <- PivotalR::db.q("select * from ndfrt.ndfrt_definingconcepts;",nrows = NULL,verbose = FALSE)
+   DefiningRoles <- PivotalR::db.q("select * from ndfrt.ndfrt_definingroles;",nrows = NULL,verbose = FALSE)
+   Def_Kind <- PivotalR::db.q("select * from ndfrt.ndfrt_kinddef;",nrows = NULL,verbose = FALSE)
+   Def_Namespace <- PivotalR::db.q("select * from ndfrt.ndfrt_namespacedef;",nrows = NULL,verbose = FALSE)
+   Def_Property <- PivotalR::db.q("select * from ndfrt.ndfrt_propertydef;",nrows = NULL,verbose = FALSE)
+   Def_Qualifier <- PivotalR::db.q("select * from ndfrt.ndfrt_qualifierdef;",nrows = NULL,verbose = FALSE)
+   Def_QualifierValue <- PivotalR::db.q("select * from ndfrt.ndfrt_qualifiervaluedef;",nrows = NULL,verbose = FALSE)
+   Def_Role <- PivotalR::db.q("select * from ndfrt.ndfrt_roledef;",nrows = NULL,verbose = FALSE)
+   Def_RoleValue <- PivotalR::db.q("select * from ndfrt.ndfrt_rolevaluedef;",nrows = NULL,verbose = FALSE)
 
-   ConceptAssociation <- db.q("select * from ndfrt.ndfrt_conceptassociation;",nrows = NULL,verbose = FALSE)
-   ConceptProperty <- db.q("select * from ndfrt.ndfrt_conceptproperty;",nrows = NULL,verbose = FALSE)
+   ConceptAssociation <- PivotalR::db.q("select * from ndfrt.ndfrt_conceptassociation;",nrows = NULL,verbose = FALSE)
+   ConceptProperty <- PivotalR::db.q("select * from ndfrt.ndfrt_conceptproperty;",nrows = NULL,verbose = FALSE)
 
-   db.disconnect(conn)
-   rm(conn)
 
    # Modify DefiningRoles data 
-   DefiningRoles <- plyr::ddply(DefiningRoles, .(concept_code),.fun = function(x) {
+   DefiningRoles <- plyr::ddply(DefiningRoles, plyr::.(concept_code),.fun = function(x) {
    idx <- which(sapply(x$role_value_ids,nchar) > 5)
    if (length(idx) > 0) {
       y <- x$role_value_ids[-idx]
@@ -30,7 +28,7 @@ createNdfrtDataFromDatabase <- function(conn) {
    }
    )
 
-   RX_Norm <- plyr::ddply(ConceptProperty, .(concept_code),.fun = function(x) {
+   RX_Norm <- plyr::ddply(ConceptProperty, plyr::.(concept_code),.fun = function(x) {
    idx <- match(c("C818","C819","C10490107818172"),x$name)
    if (! all(is.na(idx))) return(c(RX_CUI = x$value[idx[1]], RX_name = x$value[idx[2]],NUI =x$value[idx[3]]  ))}   
    )
