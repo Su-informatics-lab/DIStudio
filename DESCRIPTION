@@ -8,5 +8,8 @@ Description: #TODO#
 License: #TODO#
 Encoding: UTF-8
 LazyData: true
+Imports:
+   plyr,
+   igraph
 Suggests:
    testthat
