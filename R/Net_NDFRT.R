@@ -1,8 +1,8 @@
 Ontology.NDFRT <- function(kind, DC, DFC) {
-   Ontology <- vector("list",3)
-   names(Ontology) <- c("Nodes","Arcs","top")
+   Ontology <- vector("list", 3)
+   names(Ontology) <- c("Nodes", "Arcs", "top")
 
-   Nodes <- DC[DC$kind == kind, c(2,2,1)]
+   Nodes <- DC[DC$kind == kind, c(2, 2, 1)]
    Nodes <- cbind(Nodes, kind = kind)
    rownames(Nodes) <- NULL
    names(Nodes) <- c("id", "code", "c_name", "kind") 
@@ -22,9 +22,9 @@ Ontology.NDFRT <- function(kind, DC, DFC) {
 
 DrugTo <- function(LinkCodes, DR, DRV, Exclude=c("C30", "C36", "C26", "C22", "C52")) {
    if (all(is.na(LinkCodes))) {
-      X <- subset(DRV,!(DRV$name %in% Exclude))
+      X <- subset(DRV, !(DRV$name %in% Exclude))
    } else {
-      X <- subset(DRV,DRV$name %in% LinkCodes)
+      X <- subset(DRV, DRV$name %in% LinkCodes)
    }
 
    from <- to <- character(0)
@@ -78,10 +78,10 @@ buildNdfrtNetworks <- function() {
    load("NDFRT.Rdata")
 
 
-   ######################################## DRUG kind in NDFRT is not an Ontotlogy
+   ######################################## DRUG kind in NDFRT is not an Ontology
 
-   NDFRT.Drug  <- vector("list",4)
-   names(NDFRT.Drug) <- c("Nodes","Arcs","is.a","association")
+   NDFRT.Drug  <- vector("list", 4)
+   names(NDFRT.Drug) <- c("Nodes", "Arcs", "is.a", "association")
 
    NDFRT.Drug$Nodes <- data.frame(
       id=Rx_Norm.NDFRT$concept_code,
@@ -141,6 +141,7 @@ buildNdfrtNetworks <- function() {
 
    Nodes_all <- Def_Concept[, c(2, 2, 1, 6)]
    names(Nodes_all) <-  c("id", "code", "c_name", "kind") 
+   
    Links_all <- DrugTo(LinkCodes=NA, DR=DefiningRoles, DRV=Def_RoleValue)
 
    is.a_all <- DefiningConcepts
@@ -151,8 +152,6 @@ buildNdfrtNetworks <- function() {
       vertices=Nodes_all,
       directed=T
    )
-
-   save(Tops, net_Pan, file="Pan_net.Rdata")
 
 
    ## NET_Drug_MOA : has_MoA  
@@ -165,4 +164,6 @@ buildNdfrtNetworks <- function() {
       vertices=rbind(NDFRT.Drug$Nodes, Ont.MoA$Nodes[, 1:3]),
       directed=T
    )
+
+   list(pan=net_Pan, moa=net_MoA_)
 }
