@@ -239,20 +239,12 @@ view.network <- function(Graph, showdata=T) {
   
 
 ## look up for code or name 
-LU_name.NDFRT <- function(x, ViewOnly=F) {
-   if (ViewOnly) {
-      View(Def_Concept[grep(x, Def_Concept$name, ignore.case=T), ])
-   } else { 
-      return(Def_Concept[grep(x, Def_Concept$name, ignore.case=T), ])
-   }
+LU_name.NDFRT <- function(x, model, ignore.case=T) {
+   with(model, DefConcept[grep(x, DefConcept$name, ignore.case=ignore.case), ])
 }
 
-LU_code.NDFRT <- function(x, ViewOnly=F) {
-   if (ViewOnly) {
-      View(subset(Def_Concept, Def_Concept$code %in% x))
-   } else {
-      return(subset(Def_Concept, Def_Concept$code %in% x))
-   }
+LU_code.NDFRT <- function(x, model) {
+   with(model, subset(DefConcept, DefConcept$code %in% x))
 }
 
 
