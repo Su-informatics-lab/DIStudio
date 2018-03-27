@@ -1,6 +1,5 @@
 context("Drug Lookup Functions")
 
-
 test_that("listRelatedDrugs returns data frame with name, code, id, and kind", {
    model <- readTestRDS("alzmodel.rds")
    result <- listRelatedDrugs("C4832", model)
@@ -20,4 +19,25 @@ test_that("listRelatedDrugs returns only drugs for code", {
 
    expect_equal(drugs$code, expectedCodes)
    expect_true(all(drugs$kind == DRUG_KIND))
+})
+
+
+
+context("Annotation Lookup Functions")
+
+test_that("listDrugAnnotations returns all related entities", {
+   model <- readTestRDS("alzmodel.rds")
+   expectedCodes <- c("C1388", "C2054", "C2006", "C8130", "C29536")
+
+   annotations <- listDrugAnnotations("C12894", model)
+
+   expect_true(all(expectedCodes %in% annotations$code))
+})
+
+test_that("listDrugAnnotations excludes queried drug", {
+   model <- readTestRDS("alzmodel.rds")
+
+   annotations <- listDrugAnnotations("C12894", model)
+
+   expect_false("C12894" %in% annotations$code)
 })
