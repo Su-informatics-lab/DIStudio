@@ -61,7 +61,7 @@ Ontology.Drug <- function(rxnorm=Rx_Norm.NDFRT, is.a=DefiningConcepts, associati
 
 
 # find in-between relations and generate links
-DrugTo <- function(LinkCodes=NA, Exclude=c("C30", "C36", "C26", "C22", "C52") , DR=DefiningRoles, DRV =Def_RoleValue, DefR=Def_Role) {
+DrugTo <- function(LinkCodes=NA, Exclude=c("C30", "C36", "C26", "C22", "C52") , DR=DefiningRoles, DRV=Def_RoleValue, DefR=Def_Role) {
    if (all(is.na(LinkCodes))) {
       X <- subset(DRV, !(DRV$name %in% Exclude))
    } else {
@@ -288,7 +288,7 @@ Frequencies <- function(cui.list, cui.counts=NULL, net, Counts=NULL) {
          ArcMatch <- match(NodeArc$edges$fromto, Counts$edges$fromto)
          Counts$edges$count[ArcMatch] <- Counts$edges$count[ArcMatch] + cui.counts[i]
 
-         Counts$length <- Counts$length +1
+         Counts$length <- Counts$length + 1
       }
    }
 
