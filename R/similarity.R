@@ -1,5 +1,5 @@
 ## 
-Frequencies <- function(cui.list, model, cui.counts=NULL, Counts=NULL) {
+Frequencies <- function(model, cui.list, cui.counts=NULL, Counts=NULL) {
    net <- model$graph
    kinds <- unique(igraph::V(net)$kind)
 
@@ -42,7 +42,7 @@ Frequencies <- function(cui.list, model, cui.counts=NULL, Counts=NULL) {
 
 ## two CUIs from same kinds no need to consider arcs -- need eroor prevention later 
 ## or two list of CUIS -- count only by nodes same as two CUIs similarity 
-Similarity <- function(cui1, cui2, model, weight=NULL, PD=F) {
+Similarity <- function(model, cui1, cui2, weight=NULL, PD=F) {
    # Get just the Drug & Mechanism of Action portion of the model
    model <- getKindsSubmodel(model, c(DRUG_KIND, MECHANISM_OF_ACTION_KIND))
    net <- model$graph
@@ -60,8 +60,8 @@ Similarity <- function(cui1, cui2, model, weight=NULL, PD=F) {
       Uni <- union(nodes1, nodes2)
 
    } else {
-      F1<- Frequencies(cui1, model)
-      F2<- Frequencies(cui2, model)
+      F1<- Frequencies(model, cui1)
+      F2<- Frequencies(model, cui2)
 
       nodes1 <- F1$vertices$code[F1$vertices$count>0]
       nodes2 <- F2$vertices$code[F2$vertices$count>0]
