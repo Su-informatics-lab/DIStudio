@@ -1,20 +1,32 @@
 .PACKAGE_NAME <- 'DIStudio'
 
 
-# Helper function for getting a subset of the full data for creating
+# Helper function for getting a submodel of the full data for creating
 # focused unit tests
-getDataSubset <- function(dataModel, nodes, order) {
-   G <- dataModel$graph
-   verts <- names(igraph::ego(G, order, nodes=nodes)[[1]])
-   sg <- igraph::induced_subgraph(G, verts)
+getDataSubmodel <- function(model, verts) {
+   sg <- igraph::induced_subgraph(model$graph, verts)
 
-   DefConcept <- dataModel$DefConcept
+   DefConcept <- model$DefConcept
    DefConcept <- DefConcept[DefConcept$code %in% verts, ]
 
    list(
       graph=sg,
       DefConcept=DefConcept
    )
+}
+
+
+getEgoNetworkSubmodel <- function(model, nodes, order) {
+   verts <- names(igraph::ego(model$graph, order, nodes=nodes)[[1]])
+   getDataSubmodel(model, verts)
+}
+
+
+getKindsSubmodel <- function(model, kinds) {
+   verts <- igraph::V(model$graph)
+   verts <- subset(verts, verts$kind %in% kinds)
+
+   getDataSubmodel(model, verts)
 }
 
 
