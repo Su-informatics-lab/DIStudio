@@ -28,3 +28,43 @@ test_that("Frequencies calculates the total number of relationships for all node
 
 
 context("Drug Similarity")
+
+test_that("Similarity between drugs with identical MoA is 1", {
+   model <- readTestRDS("alzMoAmodel.rds")
+
+   # C20562 = TACRINE; C14954 = GALANTAMINE
+   # Both are Cholinesterase Inhibitors
+   score <- Similarity("C20562", "C14954", model)
+
+   expect_equal(score, 1)
+})
+
+test_that("Similarity between drugs with disjoint MoA is 0", {
+   model <- readTestRDS("alzMoAmodel.rds")
+
+   # C20562 = TACRINE; C635150 = MAOI
+   # Former is Cholinesterase Inhibitors; latter is MAOI
+   score <- Similarity("C20562", "C635150", model)
+
+   expect_equal(score, 0)
+})
+
+test_that("Similarity between drugs with one common MoA and one disjoint MoA is 0.5", {
+   model <- readTestRDS("alzMoAmodel.rds")
+
+   # C635150 = MAOI; C635170 = MAO Type-B Inhibitor
+   score <- Similarity("C635150", "C635170", model)
+
+   expect_equal(score, 0.5)
+})
+
+test_that("Similarity between sets of drugs is proportion of common MoAs", {
+   model <- readTestRDS("alzMoAmodel.rds")
+
+   expect_equal(Similarity(c('C20562'), c('C635170', 'C21508'), model), 0)
+   expect_equal(Similarity(c('C20562', 'C635150'), c('C635170', 'C21508'), model), 0.25)
+   expect_equal(Similarity(c('C20562', 'C635150'), c('C635170'), model), 0.3333, tolerance=1e-3)
+   expect_equal(Similarity(c('C20562', 'C635150'), c('C14954'), model), 0.5)
+   expect_equal(Similarity(c('C20562', 'C635150'), c('C14954', 'C635170'), model), 0.6667, tolerance=1e-3)
+   expect_equal(Similarity(c('C20562', 'C19766'), c('C14954', 'C635170'), model), 1)
+})
