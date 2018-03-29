@@ -76,6 +76,8 @@ Similarity <- function(cui1, cui2, model, weight=NULL, PD=F) {
    if (is.null(weight)) {
       return(length(Int)/length(Uni))
    } else { 
+      # TODO: Validate the weight data frame
+
       if(!PD) {
          return(sum(weight$dist[match(Int, weight$code)])/sum(weight$dist[match(Uni, weight$code)]))
       } else {

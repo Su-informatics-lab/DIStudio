@@ -29,6 +29,14 @@ test_that("Frequencies calculates the total number of relationships for all node
 
 context("Drug Similarity")
 
+test_that("Similarity function works with models containing extraneous node kinds", {
+   model <- readTestRDS("alzmodel.rds")
+
+   expect_equal(Similarity(c('C20562', 'C635150'), c('C635170', 'C21508'), model), 0.25)
+})
+
+## Drug Pair Similarity
+
 test_that("Similarity between drugs with identical MoA is 1", {
    model <- readTestRDS("alzMoAmodel.rds")
 
@@ -58,6 +66,9 @@ test_that("Similarity between drugs with one common MoA and one disjoint MoA is 
    expect_equal(score, 0.5)
 })
 
+
+## Drug Sets Similarity
+
 test_that("Similarity between sets of drugs is proportion of common MoAs", {
    model <- readTestRDS("alzMoAmodel.rds")
 
@@ -69,8 +80,38 @@ test_that("Similarity between sets of drugs is proportion of common MoAs", {
    expect_equal(Similarity(c('C20562', 'C19766'), c('C14954', 'C635170'), model), 1)
 })
 
-test_that("Similarity function works with models containing extraneous node kinds", {
-   model <- readTestRDS("alzmodel.rds")
 
-   expect_equal(Similarity(c('C20562', 'C635150'), c('C635170', 'C21508'), model), 0.25)
+## Weight Argument
+
+test_that("Similarity increases with higher weight on common MoAs", {
+   model <- readTestRDS("alzMoAmodel.rds")
+
+   weight <- data.frame(code=c('C546', 'C635169'), dist=c(2, 1))
+   score <- Similarity("C635150", "C635170", model, weight=weight)
+
+   expect_equal(score, 0.6667, tolerance=1e-3)
 })
+
+test_that("Similarity decreases with higher weight on disjoint MoAs", {
+   model <- readTestRDS("alzMoAmodel.rds")
+
+   weight <- data.frame(code=c('C546', 'C635169'), dist=c(1, 2))
+   score <- Similarity("C635150", "C635170", model, weight=weight)
+
+   expect_equal(score, 0.3333, tolerance=1e-3)
+})
+
+test_that("Similarity PD argument ", {
+   model <- readTestRDS("alzMoAmodel.rds")
+
+   weight <- data.frame(code=c('C546', 'C635169'), dist=c(2, 4))
+   scoreWithPD <- Similarity("C635150", "C635170", model, weight=weight, PD=T)
+
+   weight <- data.frame(code=c('C546', 'C635169'), dist=c(1, 4))
+   scoreWithoutPD <- Similarity("C635150", "C635170", model, weight=weight, PD=F)
+
+   expect_equal(scoreWithPD, scoreWithoutPD)
+})
+
+
+## PD Argument
