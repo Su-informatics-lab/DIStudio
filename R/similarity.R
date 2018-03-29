@@ -1,5 +1,6 @@
 ## 
-Frequencies <- function(cui.list, cui.counts=NULL, net, Counts=NULL) {
+Frequencies <- function(cui.list, model, cui.counts=NULL, Counts=NULL) {
+   net <- model$graph
    kinds <- unique(igraph::V(net)$kind)
 
    if (length(kinds) > 1) {
@@ -41,7 +42,9 @@ Frequencies <- function(cui.list, cui.counts=NULL, net, Counts=NULL) {
 
 ## two CUIs from same kinds no need to consider arcs -- need eroor prevention later 
 ## or two list of CUIS -- count only by nodes same as two CUIs similarity 
-Similarity <- function(cui1, cui2, net, weight=NULL, PD=F, View=F) {
+Similarity <- function(cui1, cui2, model, weight=NULL, PD=F) {
+   net <- model$graph
+
    if (length(cui1) == 1 & length(cui2) == 1) {
       kinds <- unique(igraph::V(net)$kind)
       if (length(kinds) > 1) {
@@ -54,17 +57,9 @@ Similarity <- function(cui1, cui2, net, weight=NULL, PD=F, View=F) {
       Int <- intersect(nodes1, nodes2)
       Uni <- union(nodes1, nodes2)
 
-      if (View) {
-         par(mfrow=c(2, 2))
-
-         plot(igraph::induced_subgraph(net, nodes1), main=cui1)
-         plot(igraph::induced_subgraph(net, nodes2), main=cui2)
-         plot(igraph::induced_subgraph(net, Int), main="Intersection")
-         plot(igraph::induced_subgraph(net, Uni), main="Union")
-      } 
    } else {
-      F1<- Frequencies(cui1, net=net)
-      F2<- Frequencies(cui2, net=net)
+      F1<- Frequencies(cui1, model)
+      F2<- Frequencies(cui2, model)
 
       nodes1 <- F1$vertices$code[F1$vertices$count>0]
       nodes2 <- F2$vertices$code[F2$vertices$count>0]
@@ -74,23 +69,6 @@ Similarity <- function(cui1, cui2, net, weight=NULL, PD=F, View=F) {
       Int <- intersect(nodes1, nodes2)
       Uni <- union(nodes1, nodes2)
 
-      if (View) {
-         par(mfcol=c(1, 2))
-         F1.G <- igraph::induced_subgraph(net_Durg_MoA, F1$vertices$code[F1$vertices$count >0])
-         F2.G <- igraph::induced_subgraph(net_Durg_MoA, F2$vertices$code[F2$vertices$count >0])
-
-         igraph::V(F1.G)$size <- ceiling(F1$vertices$count[F1$vertices$count >0]/F1$length *15)
-         igraph::E(F1.G)$width <- (F1$edges$count[F1$edges$count >0]/F1$length)*20
-         igraph::V(F1.G)$label <- NA
-         igraph::E(F1.G)$arrow.size <- .4
-         plot(F1.G)
-
-         igraph::V(F2.G)$size <- ceiling(F2$vertices$count[F2$vertices$count >0]/F2$length *15)
-         igraph::E(F2.G)$width <- (F2$edges$count[F2$edges$count >0]/F2$length)*20
-         igraph::V(F2.G)$label <- NA
-         igraph::E(F2.G)$arrow.size <- .4
-         plot(F2.G)
-      }
    } 
 
    if (is.null(weight)) {
@@ -99,7 +77,7 @@ Similarity <- function(cui1, cui2, net, weight=NULL, PD=F, View=F) {
       if(!PD) {
          return(sum(weight$dist[match(Int, weight$code)])/sum(weight$dist[match(Uni, weight$code)]))
       } else {
-      return(sum(2^weight$dist[match(Int, weight$code)])/sum(2^weight$dist[match(Uni, weight$code)]))
+         return(sum(2^weight$dist[match(Int, weight$code)])/sum(2^weight$dist[match(Uni, weight$code)]))
       }
    }
 }
