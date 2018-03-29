@@ -27,7 +27,7 @@ test_that("all arcs with no outbound edges are placed in $top", {
 
 # Lookup Function Tests
 
-context("Lookup Functions")
+context("Internal Lookup Functions")
 
 test_that("code lookup uses supplied model", {
    model <- readTestRDS("alzmodel.rds")
