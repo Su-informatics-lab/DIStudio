@@ -43,6 +43,8 @@ Frequencies <- function(cui.list, model, cui.counts=NULL, Counts=NULL) {
 ## two CUIs from same kinds no need to consider arcs -- need eroor prevention later 
 ## or two list of CUIS -- count only by nodes same as two CUIs similarity 
 Similarity <- function(cui1, cui2, model, weight=NULL, PD=F) {
+   # Get just the Drug & Mechanism of Action portion of the model
+   model <- getKindsSubmodel(model, c(DRUG_KIND, MECHANISM_OF_ACTION_KIND))
    net <- model$graph
 
    if (length(cui1) == 1 & length(cui2) == 1) {

@@ -68,3 +68,9 @@ test_that("Similarity between sets of drugs is proportion of common MoAs", {
    expect_equal(Similarity(c('C20562', 'C635150'), c('C14954', 'C635170'), model), 0.6667, tolerance=1e-3)
    expect_equal(Similarity(c('C20562', 'C19766'), c('C14954', 'C635170'), model), 1)
 })
+
+test_that("Similarity function works with models containing extraneous node kinds", {
+   model <- readTestRDS("alzmodel.rds")
+
+   expect_equal(Similarity(c('C20562', 'C635150'), c('C635170', 'C21508'), model), 0.25)
+})
