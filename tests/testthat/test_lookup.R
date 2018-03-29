@@ -36,3 +36,46 @@ test_that("name lookup uses supplied model", {
 
    expect_equal(actual$code, expected)
 })
+
+
+context("Public Lookup Function")
+
+test_that("listNodes returns all nodes with no additional arguments", {
+   model <- readTestRDS("alzmodel.rds")
+
+   nodes <- listNodes(model)
+
+   expect_equal(nrow(nodes), 345)
+})
+
+test_that("listNodes filters requested kinds", {
+   model <- readTestRDS("alzmodel.rds")
+
+   nodes <- listNodes(model, kinds=c(INGREDIENT_KIND, DISEASE_KIND))
+
+   expect_equal(nrow(nodes), 35)
+})
+
+test_that("listNodes filters requested names without case sensitivity", {
+   model <- readTestRDS("alzmodel.rds")
+
+   nodes <- listNodes(model, name='Vitamin')
+
+   expect_equal(nrow(nodes), 78)
+})
+
+test_that("listNodes respects case sensitivity argument", {
+   model <- readTestRDS("alzmodel.rds")
+
+   nodes <- listNodes(model, name='Vitamin', ignore.case=F)
+
+   expect_equal(nrow(nodes), 3)
+})
+
+test_that("listNodes with both kinds and names treats arguments as AND", {
+   model <- readTestRDS("alzmodel.rds")
+
+   nodes <- listNodes(model, kinds=c(INGREDIENT_KIND, DISEASE_KIND), name='Syndrome')
+
+   expect_equal(nrow(nodes), 2)
+})

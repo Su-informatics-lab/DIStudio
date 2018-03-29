@@ -7,3 +7,18 @@ LU_code.NDFRT <- function(x, model) {
    with(model, subset(DefConcept, DefConcept$code %in% x))
 }
 
+
+# Exposed Lookup
+listNodes <- function(model, kinds=NULL, name=NULL, ignore.case=T) {
+   nodes <- model$DefConcept
+
+   if (!is.null(kinds)) {
+      nodes <- nodes[nodes$kind %in% kinds, ]
+   }
+   
+   if (!is.null(name)) {
+      nodes <- nodes[grep(name, nodes$name, ignore.case=ignore.case), ]
+   }
+
+   nodes
+}
