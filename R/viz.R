@@ -58,3 +58,8 @@ view.network <- function(Graph, showdata=T) {
       )
    }
 }
+
+## Simple wrapper around the view.network function that accepts a model instead of a graph
+viewModel <- function(model) {
+   view.network(model$graph, showdata=F)
+}
