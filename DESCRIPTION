@@ -13,4 +13,7 @@ Imports:
    igraph,
    PivotalR
 Suggests:
-   testthat
+   testthat,
+   knitr,
+   rmarkdown
+VignetteBuilder: knitr

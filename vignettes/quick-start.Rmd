@@ -1,0 +1,70 @@
+---
+title: "DIStudio Quick Start"
+author: "Ryan Barnard"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{DIStudio Quick Start}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+First, we load the DIStudio package and load the default data model:
+```{r}
+library(DIStudio)
+
+model <- loadDefaultModel()
+```
+
+Next, suppose we're interested in Alzheimer's Disease (AD) drugs. We can lookup related nodes:
+```{r}
+listNodes(model, name="alzheimer")
+```
+
+The list can also be filtered to include only diseases:
+```{r}
+listNodes(model, name="alzheimer", kind=DISEASE_KIND)
+```
+
+From here, we have the code for Alzheimer's Disease: `C904`. To find drugs related to AD, use the `listRelatedDrugs`
+function:
+```{r}
+drugs <- listRelatedDrugs(model, "C904")
+nrow(drugs)
+head(drugs)
+```
+
+To lookup annotations related to one of these drugs, use the `listDrugAnnotations` function:
+```{r}
+annotations <- listDrugAnnotations(model, "C14004")
+nrow(annotations)
+head(annotations)
+```
+
+The list can be restricted to specific annotation kinds:
+```{r}
+listDrugAnnotations(model, "C14004", kinds=MECHANISM_OF_ACTION_KIND)
+```
+
+
+Drug similarity can be calculated with the `Similarity` function:
+```{r}
+Similarity(model, c("C14004", "C13950"), "C14954")
+```
+
+Finally, the model can be visualized with the `viewModel` function. The entire default model is too large
+to be meaningfully graphed, but the `getDataSubmodel` function can extract a portion of
+the model containing only a subset of nodes:
+```{r}
+codes <- c(drugs$code, annotations$code)
+submodel <- getDataSubmodel(model, codes)
+
+viewModel(submodel)
+```
