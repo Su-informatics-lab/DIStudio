@@ -4,6 +4,7 @@
 # Helper function for getting a submodel of the full data for creating
 # focused unit tests
 getDataSubmodel <- function(model, verts) {
+   verts <- names(verts)
    sg <- igraph::induced_subgraph(model$graph, verts)
 
    DefConcept <- model$DefConcept
