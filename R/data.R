@@ -3,12 +3,7 @@ extdata.file <- function(filename) {
 }
 
 
-getDefaultPanGraph <- function() {
-   filepath <- extdata.file("pan.rds")
-   readRDS(filepath)
-}
-
-getDefaultMoAGraph <- function() {
-   filepath <- extdata.file("moa.rds")
+loadDefaultModel <- function() {
+   filepath <- extdata.file("defaultModel.rds")
    readRDS(filepath)
 }
