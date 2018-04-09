@@ -2,10 +2,10 @@ Package: DIStudio
 Type: Package
 Title: Drug Informatics Studio
 Version: 0.1.0
-Author: #TODO#
-Maintainer: #TODO# <yourself@somewhere.net>
-Description: #TODO#
-License: #TODO#
+Author: Shyh-Huei Chen, Ryan Barnard, Lynn S. Huang, Barry I. Freedman, Jing Su
+Maintainer: Ryan Barnard <rybarnard@wakehealth.edu>
+Description: To unleash the value of medication data in electronic medical record (EMR) for research and healthcare practice, we developed an ontology-based, integrated research environment called the Drug Informatics Studio. This Studio is able to systematically annotate drugs, index patients' drug information in the EMR, define similarity metrics among drugs, subtype patients according to their drug history, and support the modeling for precision medicine and clinical decision support. The Drug Informatics Studio is composed of a pan-ontology network to provide comprehensive ontology support, ontology-indexed drug EMRs to represent drug records using this network, and an informatics toolbox to enable clinical research using ontology-based drug information. The Drug Informatics Studio addresses the challenge of systematic integration of drug information, bridges the gap between the complex medication data in the EMR and the needs of drug information in clinical research and practice, fills the pivotal missing aspects of the current EMR infrastructure, and boosts clinical research.
+License: GNU GPL
 Encoding: UTF-8
 LazyData: true
 Imports:

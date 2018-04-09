@@ -23,20 +23,20 @@ directly from RxNorm data. In the meantime, the package is bundled with a defaul
 including:
 
  * 43,474 entities across 8 categories, including:
-  * Drugs
-  * Physiologic Effects
-  * Ingredients
-  * Mechanims of Action
-  * Pharmacokinetics
-  * Diseases
-  * Dose Forms
-  * Therapeutic Categories
+   * Drugs
+   * Physiologic Effects
+   * Ingredients
+   * Mechanims of Action
+   * Pharmacokinetics
+   * Diseases
+   * Dose Forms
+   * Therapeutic Categories
  * 143,522 relationships across 23 categories, including:
-  * Is A
-  * Association
-  * Has Mechanism of Action
-  * May Treat
-  * May Prevent
+   * Is A
+   * Association
+   * Has Mechanism of Action
+   * May Treat
+   * May Prevent
 
 
 ## Citation
@@ -46,10 +46,11 @@ including:
 
 ## Authors
 
-* Jing Su
 * Shyh-Huei Chen
 * Ryan Barnard
-* **TODO**
+* Lynn S. Huang
+* Barry I. Freedman
+* Jing Su
 
 
 ## Documentation
@@ -61,4 +62,4 @@ for usage examples.
 
 ## License Information
 
-**TODO**
+GNU GPL
