@@ -3,6 +3,7 @@ extdata.file <- function(filename) {
 }
 
 
+#' @export
 loadDefaultModel <- function() {
    filepath <- extdata.file("defaultModel.rds")
    readRDS(filepath)

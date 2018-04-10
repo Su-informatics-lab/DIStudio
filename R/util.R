@@ -3,6 +3,7 @@
 
 # Helper function for getting a submodel of the full data for creating
 # focused unit tests
+#' @export
 getDataSubmodel <- function(model, verts) {
    if (!is.character(verts)) {
       verts <- names(verts)

@@ -8,7 +8,7 @@ LU_code.NDFRT <- function(model, x) {
 }
 
 
-# Exposed Lookup
+#' @export
 listNodes <- function(model, kinds=NULL, name=NULL, ignore.case=T) {
    nodes <- model$DefConcept
 

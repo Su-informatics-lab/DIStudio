@@ -1,5 +1,7 @@
-## TODO: Validate args
+#' @export
 listRelatedDrugs <- function(model, code) {
+   ## TODO: Validate args
+
    nodes <- find_nodes(code, model$graph, UD="down", SubGraph=T, kinds=DRUG_KIND)
    nodeCodes <- names(igraph::V(nodes))
 
@@ -7,8 +9,11 @@ listRelatedDrugs <- function(model, code) {
    drugs
 }
 
-## TODO: Validate args
+
+#' @export
 listDrugAnnotations <- function(model, code, kinds=NULL) {
+   ## TODO: Validate args
+
    if (is.null(kinds)) {
       # Exclude other drugs by default
       kinds = setdiff(ALL_KINDS, DRUG_KIND)
