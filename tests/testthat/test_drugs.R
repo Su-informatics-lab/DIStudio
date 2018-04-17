@@ -24,6 +24,16 @@ test_that("listRelatedDrugs returns only drugs for code", {
    expect_true(all(drugs$kind == DRUG_KIND))
 })
 
+test_that("listRelatedDrugs returns empty data frame when no matches found", {
+   model <- readTestRDS("alzmodel.rds")
+   
+   # C5904 = Supranuclear Palsy; no matches in test dataset
+   result <- listRelatedDrugs(model, "C5904")
+
+   expect_is(result, "data.frame")
+   expect_equal(nrow(result), 0)
+})
+
 
 
 context("Annotation Lookup Functions")

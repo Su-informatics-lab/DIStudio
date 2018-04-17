@@ -3,7 +3,11 @@ listRelatedDrugs <- function(model, code) {
    ## TODO: Validate args
 
    nodes <- find_nodes(code, model$graph, UD="down", SubGraph=T, kinds=DRUG_KIND)
-   nodeCodes <- names(igraph::V(nodes))
+   if (is.null(nodes)) {
+      nodeCodes <- NULL
+   } else {
+      nodeCodes <- names(igraph::V(nodes))
+   }
 
    drugs <- LU_code.NDFRT(model, nodeCodes)
    drugs

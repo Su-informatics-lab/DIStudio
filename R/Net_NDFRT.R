@@ -107,7 +107,7 @@ find_nodes <- function(CUI, net, UD="both", kinds="All", SubGraph=F, NodeOnly=F)
    }
 
    if (length(sc) == 1) {
-      return(NA)
+      return(NULL)
    } else {
       if (kinds[1] != "All") {
          sc <- subset(sc, sc$kind %in% kinds)
