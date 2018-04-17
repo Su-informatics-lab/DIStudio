@@ -34,6 +34,12 @@ test_that("listRelatedDrugs returns empty data frame when no matches found", {
    expect_equal(nrow(result), 0)
 })
 
+test_that("listRelatedDrugs produces error when code is empty", {
+   model <- readTestRDS("alzmodel.rds")
+   
+   expect_error(listRelatedDrugs(model, character()), "non-empty code must be supplied")
+})
+
 
 
 context("Annotation Lookup Functions")
@@ -76,4 +82,16 @@ test_that("listDrugAnnotations excludes queried drug", {
 
    expect_true(nrow(annotations) > 0)
    expect_false("C12894" %in% annotations$code)
+})
+
+test_that("listDrugAnnotations produces error when code is empty", {
+   model <- readTestRDS("alzmodel.rds")
+   
+   expect_error(listDrugAnnotations(model, character()), "non-empty code must be supplied")
+})
+
+test_that("listDrugAnnotations produces error when kind is invalid", {
+   model <- readTestRDS("alzmodel.rds")
+   
+   expect_error(listDrugAnnotations(model, "C12894", kind='C5'), "unrecognized kind: C5")
 })

@@ -1,8 +1,9 @@
 #' @export
 listRelatedDrugs <- function(model, code) {
-   ## TODO: Validate args
-
    validateModel(model)
+   if (length(code) == 0) {
+      stop("non-empty code must be supplied")
+   }
 
    nodes <- find_nodes(code, model$graph, UD="down", SubGraph=T, kinds=DRUG_KIND)
    if (is.null(nodes)) {
@@ -18,13 +19,19 @@ listRelatedDrugs <- function(model, code) {
 
 #' @export
 listDrugAnnotations <- function(model, code, kinds=NULL) {
-   ## TODO: Validate args
-
    validateModel(model)
+   if (length(code) == 0) {
+      stop("non-empty code must be supplied")
+   }
 
    if (is.null(kinds)) {
       # Exclude other drugs by default
-      kinds = setdiff(ALL_KINDS, DRUG_KIND)
+      kinds <- setdiff(ALL_KINDS, DRUG_KIND)
+   } else {
+      invalidKinds <- setdiff(kinds, ALL_KINDS)
+      if (length(invalidKinds) > 0) {
+         stop("unrecognized kind: ", invalidKinds)
+      }
    }
 
    nodes <- find_nodes(code, model$graph, UD="both", SubGraph=T)
