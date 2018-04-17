@@ -10,6 +10,8 @@ LU_code.NDFRT <- function(model, x) {
 
 #' @export
 listNodes <- function(model, kinds=NULL, name=NULL, ignore.case=T) {
+   validateModel(model)
+
    nodes <- model$DefConcept
 
    if (!is.null(kinds)) {

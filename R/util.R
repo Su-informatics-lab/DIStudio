@@ -5,6 +5,8 @@
 # focused unit tests
 #' @export
 getDataSubmodel <- function(model, verts) {
+   validateModel(model)
+
    if (!is.character(verts)) {
       verts <- names(verts)
    }

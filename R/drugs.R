@@ -2,6 +2,8 @@
 listRelatedDrugs <- function(model, code) {
    ## TODO: Validate args
 
+   validateModel(model)
+
    nodes <- find_nodes(code, model$graph, UD="down", SubGraph=T, kinds=DRUG_KIND)
    if (is.null(nodes)) {
       nodeCodes <- NULL
@@ -17,6 +19,8 @@ listRelatedDrugs <- function(model, code) {
 #' @export
 listDrugAnnotations <- function(model, code, kinds=NULL) {
    ## TODO: Validate args
+
+   validateModel(model)
 
    if (is.null(kinds)) {
       # Exclude other drugs by default
