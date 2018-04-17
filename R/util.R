@@ -35,6 +35,43 @@ getKindsSubmodel <- function(model, kinds) {
 }
 
 
+## ----------------
+## Model Validation
+
+validateGraph <- function(graph) {
+   if (!igraph::is_igraph(graph)) {
+      stop("graph field must be an igraph")
+   }
+
+   if (igraph::gsize(graph) == 0) {
+      stop("graph must not be empty")
+   }
+}
+
+validateConceptTable <- function(DC) {
+   if (nrow(DC) == 0) {
+      stop("concept table must not be empty")
+   }
+}
+
+validateModelFields <- function(model) {
+   expectedFields <- c('graph', 'DefConcept')
+   missingFields <- setdiff(expectedFields, names(model))
+   if (length(missingFields) > 0) {
+      stop("missing required fields: ", missingFields)
+   }
+}
+
+validateModel <- function(model) {
+   tryCatch({
+      validateModelFields(model)
+      validateGraph(model$graph)
+      validateConceptTable(model$DefConcept)
+   }, error=function(e) {
+      stop("invalid model: ", e$message)
+   })
+}
+
 ## TODO: Helper to validate supplied args:
 ##    •  kind
 ##    •  model
