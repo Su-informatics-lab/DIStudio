@@ -38,6 +38,7 @@ test_that("listRelatedDrugs produces error when code is empty", {
    model <- readTestRDS("alzmodel.rds")
    
    expect_error(listRelatedDrugs(model, character()), "non-empty code must be supplied")
+   expect_error(listRelatedDrugs(model, ""), "non-empty code must be supplied")
 })
 
 
@@ -88,6 +89,7 @@ test_that("listDrugAnnotations produces error when code is empty", {
    model <- readTestRDS("alzmodel.rds")
    
    expect_error(listDrugAnnotations(model, character()), "non-empty code must be supplied")
+   expect_error(listDrugAnnotations(model, ""), "non-empty code must be supplied")
 })
 
 test_that("listDrugAnnotations produces error when kind is invalid", {

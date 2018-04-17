@@ -1,7 +1,7 @@
 #' @export
 listRelatedDrugs <- function(model, code) {
    validateModel(model)
-   if (length(code) == 0) {
+   if (length(code) == 0 || nchar(code) == 0) {
       stop("non-empty code must be supplied")
    }
 
@@ -20,7 +20,7 @@ listRelatedDrugs <- function(model, code) {
 #' @export
 listDrugAnnotations <- function(model, code, kinds=NULL) {
    validateModel(model)
-   if (length(code) == 0) {
+   if (length(code) == 0 || nchar(code) == 0) {
       stop("non-empty code must be supplied")
    }
 
