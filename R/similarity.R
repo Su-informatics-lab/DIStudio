@@ -42,6 +42,16 @@ Frequencies <- function(model, cui.list, cui.counts=NULL, Counts=NULL) {
 
 ## two CUIs from same kinds no need to consider arcs -- need eroor prevention later 
 ## or two list of CUIS -- count only by nodes same as two CUIs similarity 
+
+#' Compute CUI Similarity
+#'
+#' TODO: Function description.
+#' 
+#' @param model A model object like returned by \code{\link{loadDefaultModel}}.
+#' @param cui1,cui2 Vectors containing a sequence of concept identifiers... TODO 
+#' @param weight TODO
+#' @param PD A logical scalar. TODO
+#' @return TODO
 #' @export
 Similarity <- function(model, cui1, cui2, weight=NULL, PD=F) {
    validateModel(model)

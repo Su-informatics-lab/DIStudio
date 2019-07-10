@@ -8,6 +8,16 @@ LU_code.NDFRT <- function(model, x) {
 }
 
 
+#' List matching nodes
+#'
+#' TODO: Function description
+#'
+#' @param model A model object like returned by \code{\link{loadDefaultModel}}.
+#' @param kinds A vector of concept kinds to include in the returned list.
+#' @param name A character vector containing a pattern that should be matched against concept names.
+#' @param ignore.case A logical scalar. If \code{FALSE}, the pattern matching is case sensitive, and if \code{TRUE}, case is ignored during
+#' matching.
+#' @return A data frame of the concepts matching the supplied \code{name}.
 #' @export
 listNodes <- function(model, kinds=NULL, name=NULL, ignore.case=T) {
    validateModel(model)

@@ -1,3 +1,10 @@
+#' List related drugs
+#'
+#' TODO: Function description
+#'
+#' @param model A model object like returned by \code{\link{loadDefaultModel}}.
+#' @param code A character vector. TODO
+#' @return A data frame of the matching drugs.
 #' @export
 listRelatedDrugs <- function(model, code) {
    validateModel(model)
@@ -17,6 +24,14 @@ listRelatedDrugs <- function(model, code) {
 }
 
 
+#' List drug annotations
+#'
+#' TODO: Function description
+#'
+#' @param model A model object like returned by \code{\link{loadDefaultModel}}.
+#' @param code A character vector. TODO
+#' @param kinds A vector of concept kinds to include in the returned list.
+#' @return A data frame of the matching annotation concepts.
 #' @export
 listDrugAnnotations <- function(model, code, kinds=NULL) {
    validateModel(model)

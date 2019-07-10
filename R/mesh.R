@@ -1,3 +1,9 @@
+#' Load a MeSH tree as a graph.
+#'
+#' TODO: Function description
+#'
+#' @param filename The name of the file from which MeSH data should be loaded.
+#' @return TODO
 #' @export
 loadMeshTree <- function(filename) {
    data <- read.table(

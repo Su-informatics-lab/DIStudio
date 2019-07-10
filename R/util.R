@@ -1,8 +1,14 @@
 .PACKAGE_NAME <- 'DIStudio'
 
 
-# Helper function for getting a submodel of the full data for creating
-# focused unit tests
+#' Extract a subgraph of the model.
+#'
+#' Helper function for getting a submodel of the full data for creating
+#' focused unit tests
+#'
+#' @param model A model object like returned by \code{\link{loadDefaultModel}}.
+#' @param verts A vector containing a sequence of the concept identifiers that should be included in the returned subgraph.
+#' @return A new model containing only the requested concepts and their relationships.
 #' @export
 getDataSubmodel <- function(model, verts) {
    validateModel(model)

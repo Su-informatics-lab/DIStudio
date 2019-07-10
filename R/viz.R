@@ -22,7 +22,7 @@ view.network <- function(Graph, showdata=T) {
       aw <- aw/2
       ew <- ew/2
       eas <- eas/2
-   } 
+   }
 
    if (showdata) {
       plot(Graph,
@@ -59,7 +59,13 @@ view.network <- function(Graph, showdata=T) {
    }
 }
 
-# Simple wrapper around the view.network function that accepts a model instead of a graph
+#' Visualize the model graph.
+#'
+#' TODO: Function description.
+#'
+#' This function is a simple wrapper around the view.network function that accepts a model instead of a graph
+#'
+#' @param model A model object like returned by \code{\link{loadDefaultModel}}.
 #' @export
 viewModel <- function(model) {
    validateModel(model)
