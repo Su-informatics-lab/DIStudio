@@ -61,7 +61,7 @@ view.network <- function(Graph, showdata=T) {
 
 #' Visualize the model graph.
 #'
-#' TODO: Function description.
+#' A naive model network visualization.   
 #'
 #' This function is a simple wrapper around the view.network function that accepts a model instead of a graph
 #'

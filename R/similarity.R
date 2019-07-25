@@ -1,4 +1,15 @@
-## 
+#' Count annotation concept frequency 
+#' 
+#' Compute the annotation concept (of one kind) frequency of a model from a given list of drug concept vectors
+#'
+#' 
+#' @param model A model object like returned by \code{\link{loadDefaultModel}}.
+#' @param cui1.list A list of vectors containing a sequence of drug concepts
+#' @param cui.counts Counter of all drug concepts if Counts presented  
+#' @param Counts A frequency table to be added to. Default is Null. 
+#' @return A data frame of the annotation concepts and their frequency (Counts).  
+#' @export
+#' 
 Frequencies <- function(model, cui.list, cui.counts=NULL, Counts=NULL) {
    net <- model$graph
    kinds <- unique(igraph::V(net)$kind)
@@ -40,18 +51,18 @@ Frequencies <- function(model, cui.list, cui.counts=NULL, Counts=NULL) {
 }
 
 
-## two CUIs from same kinds no need to consider arcs -- need eroor prevention later 
+## two CUIs from same kinds no need to consider arcs -- need error prevention later 
 ## or two list of CUIS -- count only by nodes same as two CUIs similarity 
 
-#' Compute CUI Similarity
+#' Compute Similarity based on nodes  
 #'
-#' TODO: Function description.
+#' Compute node similarity between two drug lists. vectors containing a sequence of drug concepts
 #' 
 #' @param model A model object like returned by \code{\link{loadDefaultModel}}.
-#' @param cui1,cui2 Vectors containing a sequence of concept identifiers... TODO 
-#' @param weight TODO
-#' @param PD A logical scalar. TODO
-#' @return TODO
+#' @param cui1,cui2 Vectors containing a sequence of drug concepts 
+#' @param weight A data.frame of of all notes' weights 
+#' @param PD A logical scalar. IF PD is true, weight take power of 2.
+#' @return a network similarity. 
 #' @export
 Similarity <- function(model, cui1, cui2, weight=NULL, PD=F) {
    validateModel(model)
@@ -63,7 +74,7 @@ Similarity <- function(model, cui1, cui2, weight=NULL, PD=F) {
    if (length(cui1) == 1 & length(cui2) == 1) {
       kinds <- unique(igraph::V(net)$kind)
       if (length(kinds) > 1) {
-         kinds <- kinds[!(kinds == "C8")]
+         kinds <- kinds[!(kinds == DRUG_KIND)]
       }
 
       nodes1  <- find_nodes(cui1, net, UD="up", kinds, SubGraph=F, NodeOnly=T)
@@ -81,9 +92,6 @@ Similarity <- function(model, cui1, cui2, weight=NULL, PD=F) {
 
       Int <- intersect(nodes1, nodes2)
       Uni <- union(nodes1, nodes2)
-      Int <- intersect(nodes1, nodes2)
-      Uni <- union(nodes1, nodes2)
-
    } 
 
    if (is.null(weight)) {

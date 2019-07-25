@@ -10,7 +10,7 @@ LU_code.NDFRT <- function(model, x) {
 
 #' List matching nodes
 #'
-#' TODO: Function description
+#' Find nodes of a given network based on the search criterion.  
 #'
 #' @param model A model object like returned by \code{\link{loadDefaultModel}}.
 #' @param kinds A vector of concept kinds to include in the returned list.

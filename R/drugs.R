@@ -1,9 +1,9 @@
 #' List related drugs
 #'
-#' TODO: Function description
+#' Identify all related drugs of a given concept of an ontology. 
 #'
 #' @param model A model object like returned by \code{\link{loadDefaultModel}}.
-#' @param code A character vector. TODO
+#' @param code A concept code (character vector) to look for. 
 #' @return A data frame of the matching drugs.
 #' @export
 listRelatedDrugs <- function(model, code) {
@@ -24,12 +24,12 @@ listRelatedDrugs <- function(model, code) {
 }
 
 
-#' List drug annotations
+#' List related annotations 
 #'
-#' TODO: Function description
+#' Find all related concepts of a given concept, optionally restricted to set of concept kinds. 
 #'
 #' @param model A model object like returned by \code{\link{loadDefaultModel}}.
-#' @param code A character vector. TODO
+#' @param code A concept code (character vector) to look for.
 #' @param kinds A vector of concept kinds to include in the returned list.
 #' @return A data frame of the matching annotation concepts.
 #' @export
