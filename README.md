@@ -5,6 +5,16 @@ for working with [RxNorm](https://www.nlm.nih.gov/research/umls/rxnorm/) and
 [NDFRT](https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/NDFRT/) drug
 annotation data.
 
+## Installation
+
+The DIStudio package can be installed from GitHub with the following commands:
+
+```
+# Uncomment the following line if the devtools package is not installed
+# install.packages("devtools")
+devtools::install_github("DrugInfoStudio/DIStudio")
+```
+
 
 ## Quick Start
 
