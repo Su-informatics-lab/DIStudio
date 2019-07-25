@@ -73,3 +73,8 @@ for usage examples.
 ## License Information
 
 GNU GPL
+
+
+## How to Contribute
+
+Contributions in the form of issues and pull requests are welcomed and encouraged.
