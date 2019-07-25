@@ -12,7 +12,7 @@ The DIStudio package can be installed from GitHub with the following commands:
 ```
 # Uncomment the following line if the devtools package is not installed
 # install.packages("devtools")
-devtools::install_github("DrugInfoStudio/DIStudio")
+devtools::install_github("DrugInfoStudio/DIStudio", build_vignettes=T)
 ```
 
 
