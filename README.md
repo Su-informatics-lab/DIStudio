@@ -25,6 +25,7 @@ via the the `quick-start` vignette:
 vignette('quick-start', package='DIStudio')
 ```
 
+<a href="https://zenodo.org/badge/latestdoi/128798443"><img src="https://zenodo.org/badge/128798443.svg" alt="DOI"></a>
 
 ## Included Data
 
