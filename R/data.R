@@ -12,3 +12,12 @@ loadDefaultModel <- function() {
    filepath <- extdata.file("defaultModel.rds")
    readRDS(filepath)
 }
+
+#' Load the RxNorm CUI <-> Concept table
+#'
+#' @return A data frame listing the correspondence between RxNorm CUIs and NDF-RT concepts.
+#' @export
+loadRxNormMapping <- function() {
+   filepath <- extdata.file("rxNormMapping.rds")
+   readRDS(filepath)
+}
