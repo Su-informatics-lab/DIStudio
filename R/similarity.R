@@ -61,10 +61,11 @@ Frequencies <- function(model, cui.list, cui.counts=NULL, Counts=NULL) {
 #' @param model A model object like returned by \code{\link{loadDefaultModel}}.
 #' @param cui1,cui2 Vectors containing a sequence of drug concepts 
 #' @param weight A data.frame of of all notes' weights 
-#' @param PD A logical scalar. IF PD is true, weight take power of 2.
+#' @param PD A logical scalar. If PD is true, weight take power of 2.
+#' @param View A logical scalar. If View is true, the drug lists will be visualized.
 #' @return a network similarity. 
 #' @export
-Similarity <- function(model, cui1, cui2, weight=NULL, PD=F) {
+Similarity <- function(model, cui1, cui2, weight=NULL, PD=F, View=F) {
    validateModel(model)
 
    # Get just the Drug & Mechanism of Action portion of the model
@@ -83,6 +84,15 @@ Similarity <- function(model, cui1, cui2, weight=NULL, PD=F) {
       Int <- intersect(nodes1, nodes2)
       Uni <- union(nodes1, nodes2)
 
+      # TODO: Extract visualization for better separation of concerns
+      if (View) {
+         par(mar=c(1,1,1,1), mfrow=c(2,2))
+
+         plot(igraph::induced_subgraph(net, nodes1), main = cui1)
+         plot(igraph::induced_subgraph(net, nodes2), main = cui2)
+         plot(igraph::induced_subgraph(net, Int), main = "Intersection")
+         plot(igraph::induced_subgraph(net, Uni), main = "Union")
+      }
    } else {
       F1<- Frequencies(model, cui1)
       F2<- Frequencies(model, cui2)
@@ -92,6 +102,25 @@ Similarity <- function(model, cui1, cui2, weight=NULL, PD=F) {
 
       Int <- intersect(nodes1, nodes2)
       Uni <- union(nodes1, nodes2)
+      count12 <- F1$vertices$count + F2$vertices$count
+
+      if (View)  {
+         F1.G <- igraph::induced_subgraph(net, F1$vertices$code[F1$vertices$count >0])
+         F2.G <- igraph::induced_subgraph(net, F2$vertices$code[F2$vertices$count >0])
+         F12.G <- igraph::induced_subgraph(net, F1$vertices$code[count12 >0])
+
+         igraph::V(F1.G)$size <- ceiling(F1$vertices$count[F1$vertices$count >0]/F1$length *15)
+         igraph::E(F1.G)$arrow.size <- .4
+         plot(F1.G, main = "cui1")
+
+         igraph::V(F12.G)$size <- ceiling(count12[count12>0]/(F1$length+F2$length) *15)
+         igraph::E(F12.G)$arrow.size <- .4
+         plot(F12.G, main = "cui1 + cui2")
+
+         igraph::V(F2.G)$size <- ceiling(F2$vertices$count[F2$vertices$count >0]/F2$length *15)
+         igraph::E(F2.G)$arrow.size <- .4
+         plot(F2.G, main = "cui2")
+      }
    } 
 
    if (is.null(weight)) {
