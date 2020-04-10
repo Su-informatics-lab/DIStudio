@@ -35,12 +35,15 @@ getEgoNetworkSubmodel <- function(model, nodes, order) {
 }
 
 
+#' TODO: Function description
+#' @export
 getKindsSubmodel <- function(model, kinds) {
    verts <- igraph::V(model$graph)
    verts <- subset(verts, verts$kind %in% kinds)
 
    getDataSubmodel(model, verts)
 }
+
 
 
 ## ----------------

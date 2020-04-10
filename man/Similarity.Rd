@@ -4,7 +4,7 @@
 \alias{Similarity}
 \title{Compute Similarity based on nodes}
 \usage{
-Similarity(model, cui1, cui2, weight = NULL, PD = F)
+Similarity(model, cui1, cui2, weight = NULL, PD = F, View = F)
 }
 \arguments{
 \item{model}{A model object like returned by \code{\link{loadDefaultModel}}.}
@@ -13,7 +13,9 @@ Similarity(model, cui1, cui2, weight = NULL, PD = F)
 
 \item{weight}{A data.frame of of all notes' weights}
 
-\item{PD}{A logical scalar. IF PD is true, weight take power of 2.}
+\item{PD}{A logical scalar. If PD is true, weight take power of 2.}
+
+\item{View}{A logical scalar. If View is true, the drug lists will be visualized.}
 }
 \value{
 a network similarity.

@@ -135,3 +135,26 @@ Similarity <- function(model, cui1, cui2, weight=NULL, PD=F, View=F) {
       }
    }
 }
+
+#jaccard similarity 
+J_sim <- function(x=x,Y =Y) {
+   l1_x <- sum(x)
+
+   if (is.matrix(Y)) {
+      d_xY <- apply(abs(sweep(Y, 2, x)), 1, sum)
+      l1_Y<- apply(Y, 1, sum)
+   } else {
+      d_xY <- sum(abs(x-Y))
+      l1_Y<- sum(Y)
+   }
+
+   return((l1_x+l1_Y-d_xY)/(l1_x+l1_Y+d_xY))
+}
+
+#' jaccard similarity based on frequency
+#' TODO: Function description
+#' @export
+Jaccard.F <- function(F1,F2) {
+   idx <- union(which(F1$vertices$count >0), which(F2$vertices$count >0))
+   return(J_sim(F1$vertices$count[idx], F2$vertices$count[idx]))
+}
