@@ -1,18 +1,21 @@
-#' List related drugs
+#' List related nodes
 #'
-#' Identify all related drugs of a given concept of an ontology. 
+#' Identify related nodes of a given concept of an ontology. 
 #'
 #' @param model A model object like returned by \code{\link{loadDefaultModel}}.
 #' @param code A concept code (character vector) to look for. 
-#' @return A data frame of the matching drugs.
+#' @param direction A character vector containing one of \code{'up'}, \code{'down'},
+#'                  or \code{'both'}.
+#' @param kinds A vector of concept kinds to include in the returned list.
+#' @return A data frame of the matching nodes
 #' @export
-listRelatedDrugs <- function(model, code) {
+listRelatedNodes <- function(model, code, direction='down', kinds='All') {
    validateModel(model)
    if (length(code) == 0 || nchar(code) == 0) {
       stop("non-empty code must be supplied")
    }
 
-   nodes <- find_nodes(code, model$graph, UD="down", SubGraph=T, kinds=DRUG_KIND)
+   nodes <- find_nodes(code, model$graph, UD=direction, SubGraph=T, kinds=kinds)
    if (is.null(nodes)) {
       nodeCodes <- NULL
    } else {
@@ -21,6 +24,21 @@ listRelatedDrugs <- function(model, code) {
 
    drugs <- LU_code.NDFRT(model, nodeCodes)
    drugs
+}
+
+
+#' List related drugs
+#'
+#' Identify all related drugs of a given concept of an ontology. This function is
+#' equivalent to invoking \code{listRelatedNodes(model, code direction='down', kinds=DRUG_KIND)}.
+#'
+#' @param model A model object like returned by \code{\link{loadDefaultModel}}.
+#' @param code A concept code (character vector) to look for. 
+#' @return A data frame of the matching drugs.
+#' @export
+listRelatedDrugs <- function(model, code) {
+   # TODO: Update description?
+   listRelatedNodes(model, code, direction='down', kinds=DRUG_KIND)
 }
 
 
@@ -34,11 +52,6 @@ listRelatedDrugs <- function(model, code) {
 #' @return A data frame of the matching annotation concepts.
 #' @export
 listDrugAnnotations <- function(model, code, kinds=NULL) {
-   validateModel(model)
-   if (length(code) == 0 || nchar(code) == 0) {
-      stop("non-empty code must be supplied")
-   }
-
    if (is.null(kinds)) {
       # Exclude other drugs by default
       kinds <- setdiff(ALL_KINDS, DRUG_KIND)
@@ -49,8 +62,8 @@ listDrugAnnotations <- function(model, code, kinds=NULL) {
       }
    }
 
-   nodes <- find_nodes(code, model$graph, UD="both", SubGraph=T)
-   nodeCodes <- setdiff(names(igraph::V(nodes)), code)
+   nodes <- listRelatedNodes(model, code, direction="both")
+   nodeCodes <- setdiff(nodes$code, code)
 
    annotations <- LU_code.NDFRT(model, nodeCodes)
    annotations <- annotations[annotations$kind %in% kinds, ]

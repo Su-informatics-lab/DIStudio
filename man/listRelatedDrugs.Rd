@@ -15,5 +15,6 @@ listRelatedDrugs(model, code)
 A data frame of the matching drugs.
 }
 \description{
-Identify all related drugs of a given concept of an ontology.
+Identify all related drugs of a given concept of an ontology. This function is
+equivalent to invoking \code{listRelatedNodes(model, code direction='down', kinds=DRUG_KIND)}.
 }
