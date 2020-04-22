@@ -1,0 +1,191 @@
+---
+title: "rxnorm-example"
+author: "Shyh-Huei Chen"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{RxNorm Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+In this example, we will demonstrate some essential functionalities related to
+graph-based similarities. We used simulated electronic medical records of the
+drug use of patients with glaucoma compared with patients with AIDS. 
+
+First, we load the DIStudio package and load the default data model:
+```{r}
+library(DIStudio)
+
+model <- loadDefaultModel()
+```
+
+Then we show different means to explore drugs of interest with keywords. One frequently
+used strategy is to query the NDF-RT concepts with molecular features. It is known that
+carbonic anhydrase inhibitors are widely used to treat glaucoma. Searching the NDF-RT
+graph model with keyword “carbonic” will list related concepts: 
+
+```{r}
+listNodes(model, name='carbonic')
+```
+
+Concepts about Mechanism of Action (MoA, kind C12), chemical or ingredient (kind C10),
+etc., are listed. We further explore drugs annotated by the MoA concept “Carbonic
+Anhydrase Inhibitors” (with the concept code “C648” and concept kind as “C12”) and
+visualize the ontology network of these drugs: 
+
+```{r fig.height=6}
+carbonicNodes <- listRelatedNodes(model, 'C648', direction='both')
+viewModel(getDataSubmodel(model, carbonicNodes$code))
+```
+
+Another strategy is to explore by disease (“HIV”): 
+```{r}
+listNodes(model, name='HIV')
+```
+
+And further explore this list for concepts of interest. For example, we extract drugs
+annotated by the MoA concept “HIV Protease Inhibitors” (“C670”) and visualize the ontology
+of these drugs:
+```{r fig.height=6}
+hivNodes <- listRelatedNodes(model, 'C670', direction='both')
+viewModel(getDataSubmodel(model, hivNodes$code))
+```
+
+In the next section, we will demonstrate functionality related to similarity measures
+using two simulated cohorts, the glaucoma cohort (cohort 648) of 500 patients with drug
+records enriched with the MoA concept “Carbonic Anhydrase Inhibitors” (C648), and the AIDS
+cohort (cohort 670) of 500 patients with drug records enriched with the MoA concept “HIV
+Protease Inhibitors” (“C670”). The drug records of each patient are represented by a list
+of RxNorm codes. 
+
+Load the RxNorm to NDF-RT mapping and some sample data:
+```{r}
+rxnorm <- loadRxNormMapping()
+data('rxNormCodes')
+names(rxNormCodes)
+```
+
+The list `Cohort.Glaucoma.original` of 500 elements represent 500 patients in the glaucoma cohort. The drug records of the first patient in this cohort, coded by RxNorm code, are: 
+
+```{r}
+rxNormCodes$Cohort.Glaucoma.original[[1]]
+```
+
+Similarly, the drug records of the first patient in the AIDS cohort, coded by RxNorm code,
+are:
+
+```{r}
+rxNormCodes$Cohort.AIDS.original[[1]]
+```
+
+To analyze such drug records, we first need to map RxNorm codes to NDF-RT codes. We
+provided a manually curated mapping table for this purpose. 
+
+```{r}
+# A simple helper function to simplify conversion of RxNorm CUIs to NDF-RT concept codes.
+cui2concept <- function(x, mapping) {
+   y <- mapping$concept_code[match(x, mapping$RX_CUI)]
+   y <- y[!is.na(y)]
+
+   return(y)
+}
+
+Cohort.Glaucoma.concept <- lapply(rxNormCodes$Cohort.Glaucoma.original, cui2concept, rxnorm)
+Cohort.AIDS.concept  <- lapply(rxNormCodes$Cohort.AIDS.original, cui2concept, rxnorm)
+```
+
+Then we demonstrate the following similarity measures and visualization: 
+```{r}
+Cohort.Glaucoma.Patient1 <-  Cohort.Glaucoma.concept[[1]]
+Cohort.Glaucoma.Patient2 <-  Cohort.Glaucoma.concept[[2]] 
+
+Cohort.AIDS.Patient1 <-  Cohort.AIDS.concept[[1]]  
+Cohort.AIDS.Patient2 <-  Cohort.AIDS.concept[[2]] 
+```
+
+1) Comparing the similarity of two drugs: these two drugs, “C9716” and “C35700”, are
+different in medical records. However, since these two drugs share identical MoA
+annotations, they are highly similar once projected onto the MoA knowledge domain and have
+similarity of 1. 
+```{r}
+Cohort.Glaucoma.Patient1[1]
+Cohort.Glaucoma.Patient2[2]
+Similarity(model, Cohort.Glaucoma.Patient1[1], Cohort.Glaucoma.Patient2[2], View=T)
+```
+
+
+2) Comparing the similarity of two drugs: these two drugs, “C9716” and “C50.68.17991”, are
+less similar once projected onto the MoA knowledge domain and have similarity of 0.5. This
+similarity can be comprehended by the overlapping of their MoA annotation on the graph, as
+demonstrated in the plot. 
+
+```{r}
+Cohort.Glaucoma.Patient1[1]
+Cohort.AIDS.Patient1[2]
+Similarity(model, Cohort.Glaucoma.Patient1[1], Cohort.AIDS.Patient1[2], View=T)
+```
+
+3) Comparing the similarity of drug records between two patients (or between any two lists
+of drug records). These two patients are from different cohorts and have different
+clinical conditions (glaucoma vs. AIDS). Such difference can be captured by the lower
+similarity between the drugs they used (0.1315789). The similarity can be comprehended by
+the overlapping of their MoA annotation on the graph, as demonstrated in the plot. 
+
+```{r}
+Cohort.Glaucoma.Patient1
+Cohort.AIDS.Patient1
+Similarity(model, Cohort.Glaucoma.Patient1, Cohort.AIDS.Patient1, View=T)
+```
+
+Another way to compare a pair of drug lists is to calculate their frequencies and
+compute the Jaccard similarity between the frequencies:
+```{r}
+submodel <- getKindsSubmodel(model, c(DRUG_KIND, MECHANISM_OF_ACTION_KIND))
+
+Cohort.Glaucoma.Patient1.Freq <- Frequencies(submodel, Cohort.Glaucoma.Patient1)
+Cohort.Glaucoma.Patient2.Freq <- Frequencies(submodel, Cohort.AIDS.Patient1)
+
+Jaccard.F(Cohort.Glaucoma.Patient1.Freq, Cohort.Glaucoma.Patient2.Freq)
+```
+
+These drug lists can be also be visualized by creating subgraphs of the full model 
+consisting of nodes from our simulated patients' drug lists:
+```{r}
+# Add the counts together to get the nodes in either Cohort.Glaucoma.Patient1.Freq or Cohort.Glaucoma.Patient2.Freq
+countF1F2 <- Cohort.Glaucoma.Patient1.Freq$vertices$count + Cohort.Glaucoma.Patient2.Freq$vertices$count
+
+F1.G <- igraph::induced_subgraph(model$graph, with(Cohort.Glaucoma.Patient1.Freq$vertices, code[count > 0]))
+F2.G <- igraph::induced_subgraph(model$graph, with(Cohort.Glaucoma.Patient2.Freq$vertices, code[count > 0]))
+F1F2.G <- igraph::induced_subgraph(model$graph, Cohort.Glaucoma.Patient1.Freq$vertices$code[countF1F2 > 0])
+```
+
+Once constructed, the subgraphs themselves can be visualized with the `plot` function:
+```{r}
+plot(F1.G)
+plot(F2.G)
+plot(F1F2.G)
+```
+
+The subgraph of both patient's drugs combined can be plotted with the different layout
+functions available in the `igraph` package.
+```{r}
+rxNormPalette <- colorRampPalette(c("red", "yellow", "green"))(n = 101)
+
+# Set the size and color of the vertices
+igraph::V(F1F2.G)$size <- ceiling(log10(countF1F2[countF1F2>0]+1)*5)
+igraph::V(F1F2.G)$color <- rxNormPalette[(round(Cohort.Glaucoma.Patient1.Freq$vertices$count[countF1F2>0]/countF1F2[countF1F2>0]*100)+1)]
+
+# A tree plot makes it easy to see the relationships, but it's not elegant 
+plot(F1F2.G, vertex.color=igraph::V(F1F2.G)$color, layout=igraph::layout_as_tree(F1F2.G, mode = "in"))
+# Large graph layout looks nice, but it's hard to see the similarity/dissimilarity
+plot(F1F2.G, vertex.color=igraph::V(F1F2.G)$color, layout=igraph::layout_with_lgl(F1F2.G))
+```
