@@ -25,6 +25,12 @@ via the the `quick-start` vignette:
 vignette('quick-start', package='DIStudio')
 ```
 
+The `rxnorm-example` vignette provides more detailed demonstration of the package:
+
+```
+vignette('rxnorm-example', package='DIStudio')
+```
+
 
 ## Included Data
 
